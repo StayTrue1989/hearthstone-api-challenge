@@ -15,36 +15,36 @@ load_dotenv()
 
 # .env file boilerplate code to read secret from .env file in local directory
 ### Not needed if using Vault server ###
-# MY_CLIENT_ID = os.getenv("MY_CLIENT_ID")
-# MY_CLIENT_SECRET = os.getenv("MY_CLIENT_SECRET")
+MY_CLIENT_ID = os.getenv("MY_CLIENT_ID")
+MY_CLIENT_SECRET = os.getenv("MY_CLIENT_SECRET")
 
 
 # # Set Vault variables to be used in init_server() and read_secret()
 # ### Not needed if using .env file to store secrets locally ###
-MY_VAULT_URL = "http://localhost:8200"
-VAULT_PATH = "hs_api_creds"
+# MY_VAULT_URL = "http://localhost:8200"
+# VAULT_PATH = "hs_api_creds"
 
 # Hashicorp Vault boilerplate code to read secret from Vault "Dev" server
-def init_server():
+# def init_server():
 
-    client = hvac.Client(url=f"{MY_VAULT_URL}")
-    print(f" Is client authenticated: {client.is_authenticated()}")
-    return client
+#     client = hvac.Client(url=f"{MY_VAULT_URL}")
+#     print(f" Is client authenticated: {client.is_authenticated()}")
+#     return client
 
 
-def read_secret(client):
+# def read_secret(client):
 
-    read_response = client.secrets.kv.v2.read_secret_version(path=f"{VAULT_PATH}")
-    # print(read_response)
-    return read_response
+#     read_response = client.secrets.kv.v2.read_secret_version(path=f"{VAULT_PATH}")
+#     # print(read_response)
+#     return read_response
 
 
 # Initiate server and read secret from Vault server
-client_data = init_server()
-read_data = read_secret(client_data)
+# client_data = init_server()
+# read_data = read_secret(client_data)
 
-MY_CLIENT_ID = read_data.get("data").get("data").get("MY_CLIENT_ID")
-MY_CLIENT_SECRET = read_data.get("data").get("data").get("MY_CLIENT_SECRET")
+# MY_CLIENT_ID = read_data.get("data").get("data").get("MY_CLIENT_ID")
+# MY_CLIENT_SECRET = read_data.get("data").get("data").get("MY_CLIENT_SECRET")
 
 
 # Start of FastAPI code to create web app
