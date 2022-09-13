@@ -16,12 +16,6 @@ def get_token(client_id, client_secret):
     return token.get("access_token")
 
 
-# def requests_session_token():
-#     s = requests.Session()
-#     s.headers.update({"Content-Type": "application/json"})
-#     s.headers.update({"access_token": response.headers.get("CSRFToken")})
-
-
 def hs_api_call(access_token):
     request_url = f"https://us.api.blizzard.com/hearthstone/cards?locale=en_US&manaCost=7%2C8%2C9%2C10&class=warlock,druid&rarity=legendary&access_token={access_token}"
     return requests.get(request_url, timeout=5)
@@ -38,13 +32,7 @@ def get_cards(MY_CLIENT_ID, MY_CLIENT_SECRET):
 
     result = (hs_api_call(my_access_token)).json()
 
-    # jsonResponse = result.json()
-
     card_list_response = result.get("cards")
-
-    # print(listresponse[0])
-    # print(listresponse[0]["id"])
-    # print(listresponse[0]["name"])
 
     new_list = []
     for x in card_list_response:
@@ -72,7 +60,6 @@ def get_cards_from_class(class_1, MY_CLIENT_ID, MY_CLIENT_SECRET):
     my_access_token = get_token(MY_CLIENT_ID, MY_CLIENT_SECRET)
 
     result = hs_api_call_single(my_access_token, class_1)
-    # result = hs_api_call(my_access_token)
 
     jsonResponse = result.json()
 
