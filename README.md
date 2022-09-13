@@ -42,13 +42,16 @@ All the results are sorted by card ID, starting with the smallest at the top. Th
 
 
 ## Configure .env file for Hachicorp Vault
-'''
-\# environment variables defined for local development.
-\# If an environment variable is not found in the .env file,
-\# load_dotenv will then search for a variable by the given name in the host environment.
-\# MY_CLIENT_ID=<my_client_id>
-\# MY_CLIENT_SECRET=<my_client_secret>
 
+environment variables defined for local development.
+If an environment variable is not found in the .env file,
+load_dotenv will then search for a variable by the given name in the host environment.
+
+
+'''
+MY_CLIENT_ID=<my_client_id>
+MY_CLIENT_SECRET=<my_client_secret>
+'''
 # Define location of Vault server and path to secret
 MY_VAULT_URL="http://localhost:8200"
 VAULT_PATH="hs_api_creds"
