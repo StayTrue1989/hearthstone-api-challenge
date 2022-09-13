@@ -16,6 +16,13 @@
 
 ## Basic Use
 
+You can view the FastAPI swagger docs here:
+```
+http://127.0.0.1:8000/docs
+```
+![image](https://user-images.githubusercontent.com/15153542/190015314-ba630d8b-8ae8-44d1-a476-cd7d0953fd2f.png)
+
+
 The root path shows a mix of 10 cards from the Druid **and** Warlock classes.
 ```
 http://127.0.0.1:8000/
