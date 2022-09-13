@@ -35,7 +35,7 @@ def init_server():
 def read_secret(client):
 
     read_response = client.secrets.kv.v2.read_secret_version(path=f"{VAULT_PATH}")
-    print(read_response)
+    # print(read_response)
     return read_response
 
 

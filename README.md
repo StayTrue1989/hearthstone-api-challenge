@@ -38,4 +38,31 @@ http://127.0.0.1:8000/class/mage
 http://127.0.0.1:8000/class/warrior
 ```
 
-All the results are sorted by card ID, in reverse. The first 10 cards are returned to the table
+All the results are sorted by card ID, starting with the smallest at the top. The first 10 cards are returned to the table.
+
+
+## Configure .env file for Hachicorp Vault
+'''
+# environment variables defined for local development.
+# If an environment variable is not found in the .env file,
+# load_dotenv will then search for a variable by the given name in the host environment.
+# MY_CLIENT_ID=<my_client_id>
+# MY_CLIENT_SECRET=<my_client_secret>
+
+# Define location of Vault server and path to secret
+MY_VAULT_URL="http://localhost:8200"
+VAULT_PATH="hs_api_creds"
+'''
+
+
+## Configure .env file to store MY_CLIENT_ID and MY_CLIENT_SECRET locally
+# environment variables defined for local development.
+# If an environment variable is not found in the .env file,
+# load_dotenv will then search for a variable by the given name in the host environment.
+MY_CLIENT_ID=<my_client_id>
+MY_CLIENT_SECRET=<my_client_secret>
+
+# Define location of Vault server and path to secret
+# MY_VAULT_URL="http://localhost:8200"
+# VAULT_PATH="hs_api_creds"
+'''

@@ -60,9 +60,9 @@ def get_cards(MY_CLIENT_ID, MY_CLIENT_SECRET):
         new_list.append(new_dict)
 
     # Sorting list by "id" value from each dict object in the list
-    newlist = sorted(new_list, key=lambda d: d["id"], reverse=True)
+    # newlist = sorted(new_list, key=lambda d: d["id"], reverse=True)
+    newlist = sorted(new_list, key=lambda d: d["id"])
 
-    # newlist[0].pop("id")
     # Return the first 10 items in the list
     return newlist[:11]
 
@@ -92,9 +92,8 @@ def get_cards_from_class(class_1, MY_CLIENT_ID, MY_CLIENT_SECRET):
         new_list.append(new_dict)
 
     # Sorting list by "id" value from each dict object in the list
-    newlist = sorted(new_list, key=lambda d: d["id"], reverse=True)
-
-    # newlist[0].pop("id")
+    # newlist = sorted(new_list, key=lambda d: d["id"], reverse=True)
+    newlist = sorted(new_list, key=lambda d: d["id"])
 
     # Return the first 10 items in the list
     return newlist[:11]
@@ -111,6 +110,12 @@ def replace_card_metadata(card_list, sets, rarities, classes, types):
     for card in card_list:
         for card_set in sets:
             if card["cardSetId"] == card_set["id"]:
+                card["cardSetId"] = card_set["name"]
+            # Check if card is part of legacy set and if so, replace cardSetId with "Legacy"
+            elif (
+                card_set.get("aliasSetIds")
+                and card["cardSetId"] in card_set["aliasSetIds"]
+            ):
                 card["cardSetId"] = card_set["name"]
         for rarity in rarities:
             if card["rarityId"] == rarity["id"]:
