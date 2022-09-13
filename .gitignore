@@ -1,6 +1,9 @@
 # Ignore pycache files
-__pycache__/*
-method/__pycache__/*
+__pycache__/
+method/__pycache__/
 
 # ignore .env files
 .env
+
+# ignore env directory (virtualenv)
+env/ 
