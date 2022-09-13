@@ -1,5 +1,6 @@
 import os
 import hvac
+from enum import Enum
 from time import perf_counter
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -9,6 +10,21 @@ from fastapi.templating import Jinja2Templates
 
 
 from method import card_methods
+
+# Create enum for valid class names that can be used in path parameters
+class ClassName(str, Enum):
+    demonhunter = "demonhunter"
+    druid = "druid"
+    hunter = "hunter"
+    mage = "mage"
+    paladin = "paladin"
+    priest = "priest"
+    rogue = "rogue"
+    shaman = "shaman"
+    warlock = "warlock"
+    warrior = "warrior"
+    neutral = "neutral"
+
 
 load_dotenv()
 
@@ -95,14 +111,14 @@ async def get_cards_for_druid_warlock(request: Request):
     )
 
 
-@app.get("/class/{class_name}", response_class=HTMLResponse)
-async def get_cards_for_class(request: Request, class_name: str):
+@app.get("/class/{model_name}", response_class=HTMLResponse)
+async def get_cards_for_class(request: Request, model_name: ClassName):
 
     t1_start = perf_counter()
 
     # Get all cards for the class name passed in the url path parameter
     # By default the get_cards_from_class() method will return 10 cards
-    data = card_methods.get_cards_from_class(class_name, MY_CLIENT_ID, MY_CLIENT_SECRET)
+    data = card_methods.get_cards_from_class(model_name, MY_CLIENT_ID, MY_CLIENT_SECRET)
 
     (
         set_data,
