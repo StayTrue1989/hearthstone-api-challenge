@@ -1,5 +1,7 @@
+# from multiprocessing import set_start_method
 import os
-import hvac
+
+# import hvac
 from enum import Enum
 from time import perf_counter
 from dotenv import load_dotenv
@@ -8,11 +10,17 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+# import requests
+# from oauthlib.oauth2 import BackendApplicationClient
+# from requests_oauthlib import OAuth2Session
+
 
 from method import card_methods
 
 # Create enum for valid class names that can be used in path parameters
 class ClassName(str, Enum):
+    """Enum for valid class names that can be used in path parameters"""
+
     demonhunter = "demonhunter"
     druid = "druid"
     hunter = "hunter"
@@ -72,34 +80,30 @@ templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
-async def get_cards_for_druid_warlock(request: Request):
+async def display_card_for_druid_warlock(request: Request):
+    """Display cards for druid and warlock classes"""
 
     t1_start = perf_counter()
 
-    # Get cards for Druid and Warlock
-    # By default, the get_cards() method will return cards for Druid and Warlock
-    # By default, the get_cards() method will return 10 cards
-    data = card_methods.get_cards(MY_CLIENT_ID, MY_CLIENT_SECRET)
+    # Start requests session and get access token for Blizzard API calls
+    s = card_methods.get_token_session(MY_CLIENT_ID, MY_CLIENT_SECRET)
 
-    (
-        set_data,
-        class_data,
-        type_data,
-        rarity_data,
-    ) = card_methods.get_all_metadata_variables(MY_CLIENT_ID, MY_CLIENT_SECRET)
+    card_data = card_methods.get_cards_for_druid_warlock(s)
 
-    # Replace card metadata with human readable names
-    card_methods.replace_card_metadata(
-        data, set_data, rarity_data, class_data, type_data
-    )
+    card_methods.replace_card_metadata(card_data, s)
 
-    headings = card_methods.create_formatted_headers(data)
+    headings = card_methods.create_formatted_headers(card_data)
 
-    data_list = card_methods.format_table_data_for_jinja(data)
+    data_list = card_methods.format_table_data_for_jinja(card_data)
+
+    # Split the data list to only return the first 10 cards
+    data_list = data_list[:10]
+
+    print(f"{len(data_list)} matching cards returned for druid and warlock classes")
 
     t1_stop = perf_counter()
 
-    print("Elapsed time during the whole program in seconds:", t1_stop - t1_start)
+    print("Elapsed time during call to home path /: ", t1_stop - t1_start)
 
     return templates.TemplateResponse(
         "table.html",
@@ -113,32 +117,67 @@ async def get_cards_for_druid_warlock(request: Request):
 
 @app.get("/class/{model_name}", response_class=HTMLResponse)
 async def get_cards_for_class(request: Request, model_name: ClassName):
+    """Display 10 cards for the class specified in the path parameter"""
 
     t1_start = perf_counter()
 
-    # Get all cards for the class name passed in the url path parameter
-    # By default the get_cards_from_class() method will return 10 cards
-    data = card_methods.get_cards_from_class(model_name, MY_CLIENT_ID, MY_CLIENT_SECRET)
+    # Start requests session and get access token for Blizzard API calls
+    s = card_methods.get_token_session(MY_CLIENT_ID, MY_CLIENT_SECRET)
 
-    (
-        set_data,
-        class_data,
-        type_data,
-        rarity_data,
-    ) = card_methods.get_all_metadata_variables(MY_CLIENT_ID, MY_CLIENT_SECRET)
+    # Get cards for the class specified in the path parameter
+    card_data = card_methods.get_cards_from_class(model_name, s)
 
-    # Replace card metadata with human readable names
-    card_methods.replace_card_metadata(
-        data, set_data, rarity_data, class_data, type_data
-    )
+    card_methods.replace_card_metadata(card_data, s)
 
-    headings = card_methods.create_formatted_headers(data)
+    # Create formatted headers for the table
+    headings = card_methods.create_formatted_headers(card_data)
 
-    data_list = card_methods.format_table_data_for_jinja(data)
+    # Format the data for the table to be displayed in the HTML template
+    data_list = card_methods.format_table_data_for_jinja(card_data)
+
+    # Split the data list to only return the first 10 cards for the class requested
+    data_list = data_list[:10]
+    print(f"{len(data_list)} matching cards returned for {model_name} class")
 
     t1_stop = perf_counter()
+    print("Elapsed time during call to path /class/{model_name}: ", t1_stop - t1_start)
 
-    print("Elapsed time during the whole program in seconds:", t1_stop - t1_start)
+    return templates.TemplateResponse(
+        "table.html",
+        {
+            "request": request,
+            "headings": headings,
+            "data": data_list,
+        },
+    )
+
+
+@app.get("/class/{model_name}/all", response_class=HTMLResponse)
+async def get_all_cards_for_class(request: Request, model_name: ClassName):
+    """Display all cards for the class specified in the path parameter
+    Returns all cards for the class passed in the url path parameter."""
+    t1_start = perf_counter()
+
+    # Start requests session and get access token for Blizzard API calls
+    s = card_methods.get_token_session(MY_CLIENT_ID, MY_CLIENT_SECRET)
+
+    card_data = card_methods.get_cards_from_class(model_name, s)
+
+    card_methods.replace_card_metadata(card_data, s)
+
+    # Create formatted headers for the table
+    headings = card_methods.create_formatted_headers(card_data)
+
+    # Format the data for the table to be displayed in the HTML template
+    data_list = card_methods.format_table_data_for_jinja(card_data)
+
+    # Prints the number of matching cards returned for the class name passed in the path parameter
+    print(f"{len(data_list)} matching cards returned for {model_name} class")
+
+    t1_stop = perf_counter()
+    print(
+        "Elapsed time during call to path /class/{model_name}/all: ", t1_stop - t1_start
+    )
 
     return templates.TemplateResponse(
         "table.html",
