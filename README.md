@@ -1,3 +1,11 @@
+# ** **Note** ** 9-17-2022
+### I made some additional changes to the code after submitting it for review. 
+### I couldn't help myself. :joy:
+
+Check out the **Releases** page for a copy of the code as it was submitted on 9/13/2022.
+
+You can also compare the **app-enhancements** branch to the release tag **9-13-2022** to see the changes.
+
 # hearthstone-api-challenge
 
 >Create web application to render requested information from the API into a human readable page
