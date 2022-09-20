@@ -65,7 +65,36 @@ http://127.0.0.1:8000/class/mage
 
 ## Setup the API project locally
 
+<details><summary>Linux</summary>
+
+To create a virtual environment, go to the project’s directory and run virtualenv.
+
+```
+virtualenv -p /usr/bin/python3 env
+```
+venv will create a virtual Python installation in the env folder.
+
+Activate the virtual environment
+
+```
+source env/bin/activate
+```
+
+Install required packages from requirements.txt file
+
+```
+pip install -r requirements.txt
+```
+
+
+
+</details>
+
+
+<details><summary>Windows</summary>
+
 To create a virtual environment, go to the project’s directory and run venv.
+
 ```
 py -m venv env
 ```
@@ -80,6 +109,7 @@ Install required packages from requirements.txt file
 ```
 py -m pip install -r requirements.txt
 ```
+</details>
 
 > ### Before running the next command, look [below](https://github.com/StayTrue1989/hearthstone-api-challenge/edit/main/README.md#provide-the-required-client-id-and-client-secret-necessary-to-authenticate-with-the-blizzard-hearthstone-api) for instructions to configure credentails for API authentication.
 
