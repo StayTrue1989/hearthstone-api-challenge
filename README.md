@@ -62,6 +62,10 @@ http://127.0.0.1:8000/class/mage
 - Only cards with a "Legendary" rarity and mana cost of 7 or more are returned. 
 - The first 10 cards are returned to the table.
 
+Adding the /all path after a class name shows all the cards from the class you specify that match the other conditions (Mana cost 7+, Legendary, sorted by card ID)
+```
+http://127.0.0.1:8000/class/druid/all
+```
 
 ## Setup the API project locally
 
